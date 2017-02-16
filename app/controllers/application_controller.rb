@@ -6,7 +6,7 @@ class ApplicationController < ActionController::API
 
   def current_user
     @current_user ||= User.find(@device.resource_owner_id)          if request.headers['X-Physical-Secret']
-    @current_user ||= User.find(doorkeeper_token.resource_owner_id) if request.headers['Authorization']
+    @current_user ||= User.find(doorkeeper_token.resource_owner_id) if request.headers['Authorization'] or (not request.headers['X-Physical-Secret'] and doorkeeper_token)
     return @current_user
   end
 
